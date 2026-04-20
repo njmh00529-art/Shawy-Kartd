@@ -28,142 +28,6 @@ body{
   position: relative;
 }
 
-.code-editor-btn {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 10001;
-  background: #e74c3c;
-  padding: 10px 15px;
-  border-radius: 8px;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-  border: none;
-}
-
-.code-editor-btn:hover {
-  background: #c0392b;
-}
-
-.code-editor-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.9);
-  display: none;
-  z-index: 10002;
-  flex-direction: column;
-}
-
-.code-editor-modal.active {
-  display: flex;
-}
-
-.code-editor-header {
-  background: #2c3e50;
-  color: white;
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.code-editor-header h2 {
-  margin: 0;
-}
-
-.code-editor-close {
-  background: #e74c3c;
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.code-editor-close:hover {
-  background: #c0392b;
-}
-
-.code-editor-body {
-  display: flex;
-  flex: 1;
-  gap: 10px;
-  padding: 10px;
-  overflow: hidden;
-}
-
-.code-editor-left {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: #1e1e1e;
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.code-editor-right {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: #f5f5f5;
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.code-editor-textarea {
-  flex: 1;
-  padding: 15px;
-  background: #1e1e1e;
-  color: #00ff00;
-  font-family: 'Courier New', monospace;
-  font-size: 13px;
-  border: none;
-  resize: none;
-  direction: ltr;
-  line-height: 1.5;
-}
-
-.code-editor-preview {
-  flex: 1;
-  background: white;
-  border: 1px solid #ddd;
-  overflow: auto;
-}
-
-.code-editor-buttons {
-  display: flex;
-  gap: 10px;
-  padding: 10px;
-  background: #2c3e50;
-}
-
-.code-editor-buttons button {
-  background: #2ecc71;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.code-editor-buttons button:hover {
-  background: #27ae60;
-}
-
-.code-editor-buttons button.danger {
-  background: #e74c3c;
-}
-
-.code-editor-buttons button.danger:hover {
-  background: #c0392b;
-}
-
 .header{
 background:linear-gradient(to left,#2ecc71,#27ae60);
 color:white;
@@ -553,37 +417,6 @@ padding:8px 15px !important;
 margin:0 !important;
 }
 
-.currency-converter {
-background:#f9f9f9;
-padding:15px;
-border-radius:10px;
-margin-bottom:15px;
-border:2px solid #2ecc71;
-}
-
-.currency-converter input {
-width:100% !important;
-margin:10px 0 !important;
-padding:12px !important;
-font-size:16px !important;
-}
-
-.usd-display {
-text-align:center;
-background:white;
-padding:15px;
-border-radius:8px;
-margin-top:10px;
-border:2px solid #27ae60;
-}
-
-.usd-display p {
-color:#2ecc71;
-font-weight:bold;
-font-size:18px;
-margin:0;
-}
-
 @media (max-width:600px){
 .grid{
 grid-template-columns:repeat(2,1fr);
@@ -614,31 +447,10 @@ padding: 8px;
 
 <body>
 
-<button class="code-editor-btn" onclick="toggleCodeEditor()">🔍 افحص الكود</button>
-
-<div class="code-editor-modal" id="codeEditorModal">
-  <div class="code-editor-header">
-    <h2>🔍 محرر الكود</h2>
-    <button class="code-editor-close" onclick="toggleCodeEditor()">إغلاق</button>
-  </div>
-  <div class="code-editor-body">
-    <div class="code-editor-left">
-      <textarea class="code-editor-textarea" id="codeTextarea" placeholder="الكود هنا..."></textarea>
-    </div>
-    <div class="code-editor-right">
-      <iframe id="codePreview" class="code-editor-preview"></iframe>
-    </div>
-  </div>
-  <div class="code-editor-buttons">
-    <button onclick="updatePreview()">▶️ تحديث المعاينة</button>
-    <button onclick="copyCode()">📋 نسخ الكود</button>
-    <button class="danger" onclick="resetCode()">🔄 استرجاع الأصلي</button>
-  </div>
-</div>
-
 <div class="sidebar" id="sidebar">
 <a onclick="goHome()">🏠 الرئيسية</a>
 <a onclick="openBalance()">💰 إضافة رصيد</a>
+<a onclick="openCharge()">💳 شحن</a>
 <a onclick="openOrders()">📦 طلباتي</a>
 <a id="adminLink" onclick="openAdmin()" style="background:#e74c3c; display:none;">👑 لوحة الإدمن</a>
 <a onclick="logout()" style="background:#e74c3c;">🚪 تسجيل الخروج</a>
@@ -701,6 +513,10 @@ padding: 8px;
 <h3>📦 الطلبات</h3>
 <button onclick="showAllOrders()">عرض الطلبات</button>
 </div>
+<div class="admin-card">
+<h3>💰 أكواد الشحن</h3>
+<button onclick="showChargeCodes()">إدارة الأكواد</button>
+</div>
 </div>
 <div id="adminDetails" style="display:none;"></div>
 </div>
@@ -734,7 +550,157 @@ padding: 8px;
 </div>
 </div>
 
+<div id="chargePage" style="display:none">
+<div class="header">
+<div onclick="goHome()" style="cursor:pointer;">رجوع</div>
+<div>شحن الرصيد</div>
+</div>
+<div style="padding:10px;text-align:center;">
+<h3>إدخال كود الشحن</h3>
+<input id="codeInput" placeholder="أدخل الكود هنا">
+<button onclick="useCode()">تفعيل الكود</button>
+</div>
+</div>
+
 <div id="shamSYP" style="display:none">
 <div class="header"><div onclick="openBalance()" style="cursor:pointer;">رجوع</div><div>شام كاش سوري</div></div>
 <div style="padding:10px;">
-<div class
+<div class="card">
+<div>رقم: 123456</div>
+<div>الاسم: اسمك</div>
+</div>
+<input placeholder="اسم المرسل">
+<input placeholder="المبلغ">
+<input placeholder="رقم العملية">
+<input type="file">
+<button onclick="sendForm(this)">إرسال</button>
+</div>
+</div>
+
+<div id="shamUSD" style="display:none">
+<div class="header"><div onclick="openBalance()" style="cursor:pointer;">رجوع</div><div>شام كاش دولار</div></div>
+<div style="padding:10px;">
+<div class="card">
+<div>رقم: 654321</div>
+<div>الاسم: اسمك</div>
+</div>
+<input placeholder="اسم المرسل">
+<input placeholder="المبلغ">
+<input placeholder="رقم العملية">
+<input type="file">
+<button onclick="sendForm(this)">إرسال</button>
+</div>
+</div>
+
+<div id="bankPage" style="display:none">
+<div class="header"><div onclick="openBalance()" style="cursor:pointer;">رجوع</div><div>زراعات بنك</div></div>
+<div style="padding:10px;">
+<div class="card">
+<div>IBAN: TR000000</div>
+<div>الاسم: اسمك</div>
+</div>
+<input placeholder="اسم المرسل">
+<input placeholder="المبلغ">
+<input placeholder="رقم العملية">
+<input type="file">
+<button onclick="sendForm(this)">إرسال</button>
+</div>
+</div>
+
+<div id="ordersPage" style="display:none;">
+<div class="header"><div onclick="goHome()" style="cursor:pointer;">رجوع</div><div>📦 طلباتي</div></div>
+<div id="ordersList"></div>
+</div>
+
+<div class="modal" id="modal">
+<div class="modal-content">
+<div class="close-btn" onclick="closeModal()">✖</div>
+<h3>إدخال ID</h3>
+<input id="userId">
+<button onclick="confirmBuy()">تأكيد</button>
+</div>
+</div>
+
+<div id="successPopup" class="modal">
+  <div class="modal-content" style="width:80%;max-width:400px;">
+    <h3>✅ تم استلام طلبك</h3>
+    <p>سيتم تجهيز طلبك خلال دقائق</p>
+    <button onclick="goWhatsApp()">📞 استلام الكود</button>
+    <br><br>
+    <button onclick="closePopup()" style="background:#ccc;color:black;">إغلاق</button>
+  </div>
+</div>
+
+<script>
+const TELEGRAM_TOKEN = "8631734604:AAF6IpXFZ40ejHmL6drsqGteNiz7XJNTcmo";
+const CHAT_ID = "8044738479";
+const ADMIN_EMAIL = "mhmdshyl826@gmaill.com";
+
+let codes = {"A1B2C3D1":1,"E4F5G6H2":1,"I7J8K9L3":1,"M1N2O3P4":1,"Q5R6S7T5":1,"U8V9W1X6":1,"Y2Z3A4B7":1,"C5D6E7F8":1,"G9H1I2J9":1,"K3L4M5N1":1,"O6P7Q8R2":1,"S9T1U2V3":1,"W4X5Y6Z4":1,"A7B8C9D5":1,"E1F2G3H6":1,"I4J5K6L7":1,"M8N9O1P8":1,"Q2R3S4T9":1,"U5V6W7X1":1,"Y8Z9A1B2":1,"C3D4E5F3":1,"G6H7I8J4":1,"K9L1M2N5":1,"O3P4Q5R6":1,"S7T8U9V7":1,"W1X2Y3Z8":1,"A4B5C6D9":1,"E7F8G9H1":1,"I2J3K4L2":1,"M5N6O7P3":1,"Q8R9S1T4":1,"U2V3W4X5":1,"Y6Z7A8B6":1,"C9D1E2F7":1,"G3H4I5J8":1,"K6L7M8N9":1,"O1P2Q3R1":1,"S4T5U6V2":1,"W7X8Y9Z3":1,"A2B3C4D4":1,"E5F6G7H5":1,"I8J9K1L6":1,"M2N3O4P7":1,"Q5R6S7T8":1,"U8V9W1X9":1,"Y2Z3A4B1":1,"C5D6E7F2":1,"G8H9I1J3":1,"K2L3M4N4":1,"O5P6Q7R5":1,"AB12CD34":2,"EF56GH78":2,"IJ90KL12":2,"MN34OP56":2,"QR78ST90":2,"UV12WX34":2,"YZ56AB78":2,"CD90EF12":2,"GH34IJ56":2,"KL78MN90":2,"OP12QR34":2,"ST56UV78":2,"WX90YZ12":2,"AB34CD56":2,"EF78GH90":2,"IJ12KL34":2,"MN56OP78":2,"QR90ST12":2,"UV34WX56":2,"YZ78AB90":2,"CODE1AB5":5,"CODE2CD5":5,"CODE3EF5":5,"CODE4GH5":5,"CODE5IJ5":5,"CODE6KL5":5,"CODE7MN5":5,"CODE8OP5":5,"CODE9QR5":5,"CODE10ST5":5,"CODE11UV5":5,"CODE12WX5":5,"CODE13YZ5":5,"CODE14AB5":5,"CODE15CD5":5,"CODE16EF5":5,"CODE17GH5":5,"CODE18IJ5":5,"CODE19KL5":5,"CODE20MN5":5,"X7K2M9Q1":10,"A9D3F8L2":10,"P4Z8T1R6":10,"W2E5Y7U3":10,"K9H3J6L1":10,"Q1W2E3R4":10,"Z8X7C6V5":10,"M4N5B6V7":10,"T1Y2U3I4":10,"G5H6J7K8":10,"L9K8J7H6":10,"R3T4Y5U6":10,"F1D2S3A4":10,"O9P8I7U6":10,"C3V4B5N6":10,"E7R8T9Y1":10,"U2I3O4P5":10,"S6D7F8G9":10,"J1K2L3Z4":10,"N5M6B7V8":10,"AA1B2C3D":20,"EF4G5H6I":20,"JK7L8M9N":20,"OP1Q2R3S":20,"TU4V5W6X":20,"YZ7A8B9C":20,"D1E2F3G4":20,"H5I6J7K8":20,"L9M1N2O3":20,"P4Q5R6S7":20,"T8U9V1W2":20,"X3Y4Z5A6":20,"B7C8D9E1":20,"F2G3H4I5":20,"J6K7L8M9":20,"N1O2P3Q4":20,"R5S6T7U8":20,"V9W1X2Y3":20,"Z4A5B6C7":20,"D8E9F1G2":20,"Z1X2C3V4":50,"B5N6M7Q8":50,"W9E1R2T3":50,"Y4U5I6O7":50,"P8A9S1D2":50,"F3G4H5J6":50,"K7L8Z9X1":50,"C2V3B4N5":50,"M6Q7W8E9":50,"R1T2Y3U4":50,"I5O6P7A8":50,"S9D1F2G3":50,"H4J5K6L7":50,"Z8X9C1V2":50,"B3N4M5Q6":50,"W7E8R9T1":50,"Y2U3I4O5":50,"P6A7S8D9":50,"F1G2H3J4":50,"K5L6Z7X8":50,"Q1Z2X3C4":75,"V5B6N7M8":75,"A9S1D2F3":75,"G4H5J6K7":75,"L8P9O1I2":75,"U3Y4T5R6":75,"E7W8Q9Z1":75,"X2C3V4B5":75,"N6M7A8S9":75,"D1F2G3H4":75,"J5K6L7P8":75,"O9I1U2Y3":75,"T4R5E6W7":75,"Q8Z9X1C2":75,"V3B4N5M6":75,"A7S8D9F1":75,"G2H3J4K5":75,"L6P7O8I9":75,"U1Y2T3R4":75,"E5W6Q7Z8":75,"Z9X8C7V6":100,"B5N4M3Q2":100,"W1E9R8T7":100,"Y6U5I4O3":100,"P2A1S9D8":100,"F7G6H5J4":100,"K3L2Z1X9":100,"C8V7B6N5":100,"M4Q3W2E1":100,"R9T8Y7U6":100,"I5O4P3A2":100,"S1D9F8G7":100,"H6J5K4L3":100,"Z2X1C9V8":100,"B7N6M5Q4":100,"W3E2R1T9":100,"Y8U7I6O5":100,"P4A3S2D1":100,"F9G8H7J6":100,"K5L4Z3X2":100};
+
+const apps=[{name:"يا أهلا",img:"https://i.ibb.co/G307spDQ/image.png",packs:[{amount:2500,price:5},{amount:5200,price:10},{amount:10600,price:20},{amount:27000,price:50},{amount:40000,price:75},{amount:52500,price:100}]},{name:"Soltchen",img:"https://i.ibb.co/TMqz7RhY/image.jpg",packs:[{amount:2500,price:5},{amount:5200,price:10},{amount:10600,price:20},{amount:27000,price:50},{amount:40000,price:75},{amount:52500,price:100}]},{name:"Sugo",img:"https://i.ibb.co/qVF1fnS/image.jpg",packs:[{amount:2500,price:5}]},{name:"YoParty",img:"https://i.ibb.co/8n3DfwWT/image.jpg",packs:[{amount:2500,price:5}]},{name:"Zina Live",img:"https://i.ibb.co/gM9GsQbt/image.jpg",packs:[{amount:2500,price:5}]},{name:"Soul Star",img:"https://i.ibb.co/VW6061sh/image.jpg",packs:[{amount:2500,price:5}]},{name:"4fun",img:"https://i.ibb.co/7tJjGrsn/image.jpg",packs:[{amount:2500,price:5}]}];
+
+let selectedMethod="",selectedPrice=0,selectedApp="",selectedAmount=0,usedCodes=JSON.parse(localStorage.getItem("usedCodes"))||[];
+
+function getUser(){return JSON.parse(localStorage.getItem("currentUser"))||{};}
+function isAdmin(){return getUser().email===ADMIN_EMAIL;}
+function updateBalance(){let user=getUser(),balanceKey="balance_"+(user.email||"guest"),balance=parseFloat(localStorage.getItem(balanceKey))||0;document.getElementById("balanceText").innerText="الرصيد: $"+balance.toFixed(2);isAdmin()&&(document.getElementById("adminLink").style.display="block");}
+function getBalance(){let user=getUser(),balanceKey="balance_"+(user.email||"guest");return parseFloat(localStorage.getItem(balanceKey))||0;}
+function setBalance(amount){let user=getUser(),balanceKey="balance_"+(user.email||"guest");localStorage.setItem(balanceKey,amount),updateBalance();}
+function openRegister(){document.getElementById("loginPage").style.display="none",document.getElementById("registerPage").style.display="flex";}
+function goToLogin(){document.getElementById("registerPage").style.display="none",document.getElementById("loginPage").style.display="flex";}
+function register(){let email=document.getElementById("regEmail").value.trim(),password=document.getElementById("regPassword").value.trim(),passwordConfirm=document.getElementById("regPasswordConfirm").value.trim();if(!email||!password||!passwordConfirm)return void alert("❌ ادخل جميع الحقول");if(password!==passwordConfirm)return void alert("❌ كلمات المرور غير متطابقة");if(password.length<6)return void alert("❌ كلمة المرور يجب أن تكون 6 أحرف على الأقل");let users=JSON.parse(localStorage.getItem("users"))||[];if(users.find(u=>u.email===email))return void alert("❌ هذا الحساب موجود بالفعل");users.push({email:email,password:btoa(password)}),localStorage.setItem("users",JSON.stringify(users)),alert("✅ تم إنشاء الحساب بنجاح!"),document.getElementById("regEmail").value="",document.getElementById("regPassword").value="",document.getElementById("regPasswordConfirm").value="",goToLogin();}
+function login(){let email=document.getElementById("emailInput").value.trim(),password=document.getElementById("passwordInput").value.trim();if(!email||!password)return void alert("❌ ادخل الإيميل وكلمة المرور");let users=JSON.parse(localStorage.getItem("users"))||[],user=users.find(u=>u.email===email&&u.password===btoa(password));user?(localStorage.setItem("currentUser",JSON.stringify(user)),document.getElementById("loginPage").style.display="none",document.getElementById("home").style.display="block",localStorage.setItem("loggedIn","true"),loadApps(),updateBalance()):alert("❌ الإيميل أو كلمة المرور غلط");}
+function logout(){localStorage.removeItem("loggedIn"),localStorage.removeItem("currentUser"),document.getElementById("home").style.display="none",document.getElementById("adminPage").style.display="none",document.getElementById("ordersPage").style.display="none",document.getElementById("loginPage").style.display="flex",document.getElementById("emailInput").value="",document.getElementById("passwordInput").value="";}
+function hideAll(){["home","appPage","balancePage","chargePage","shamSYP","shamUSD","bankPage","ordersPage","adminPage"].forEach(id=>{let el=document.getElementById(id);el.classList.remove("show");el.style.display="none";}),document.getElementById("sidebar").classList.remove("open"),document.getElementById("overlay").style.display="none";}
+function goHome(){hideAll(),document.getElementById("home").style.display="block";}
+function openAdmin(){isAdmin()?(hideAll(),document.getElementById("adminPage").style.display="block",updateAdminStats()):alert("❌ أنت لا تملك صلاحيات الإدمن!");}
+function updateAdminStats(){let users=JSON.parse(localStorage.getItem("users"))||[],totalSales=0,totalOrders=0;users.forEach(user=>{let orders=JSON.parse(localStorage.getItem("orders_"+user.email))||[];totalOrders+=orders.length,orders.forEach(o=>totalSales+=o.price)}),document.getElementById("totalUsers").innerText=users.length,document.getElementById("totalOrders").innerText=totalOrders,document.getElementById("totalSales").innerText=totalSales.toFixed(2);}
+function showAllUsers(){let users=JSON.parse(localStorage.getItem("users"))||[],html='<h3>👥 إدارة المستخدمين والأرصدة</h3>';users.forEach(u=>{let balance=parseFloat(localStorage.getItem("balance_"+u.email))||0;html+=`<div class="balance-modal"><h4>👤 ${u.email}</h4><p><strong>💰 الرصيد الحالي:</strong> $${balance.toFixed(2)}</p><div class="balance-controls"><input type="number" id="amount_${u.email}" placeholder="المبلغ" step="0.01"><button onclick="addBalance('${u.email}')">➕ إضافة</button><button onclick="subtractBalance('${u.email}')" style="background:#e74c3c;">➖ طرح</button><button onclick="deleteUser('${u.email}')" style="background:#d9534f;">🗑️ حذف</button></div></div>`;});html+='<br><button onclick="goBack()" style="width:100%;padding:10px;background:#ccc;color:black;">← رجوع</button>',document.getElementById("adminDetails").innerHTML=html,document.getElementById("adminDetails").style.display="block";}
+function addBalance(email){let amount=parseFloat(document.getElementById("amount_"+email).value);if(!amount||amount<=0)return void alert("❌ ادخل مبلغ صحيح");let currentBalance=parseFloat(localStorage.getItem("balance_"+email))||0,newBalance=currentBalance+amount;localStorage.setItem("balance_"+email,newBalance),alert("✅ تم إضافة $"+amount+" للمستخدم!"),sendToTelegram("💰 تم إضافة رصيد من قبل الأدمن\n👤 المستخدم: "+email+"\n💵 المبلغ المضاف: $"+amount+"\n💳 الرصيد الجديد: $"+newBalance.toFixed(2)+"\n⏰ الوقت: "+new Date().toLocaleString()),showAllUsers();}
+function subtractBalance(email){let amount=parseFloat(document.getElementById("amount_"+email).value);if(!amount||amount<=0)return void alert("❌ ادخل مبلغ صحيح");let currentBalance=parseFloat(localStorage.getItem("balance_"+email))||0;if(amount>currentBalance)return void alert("❌ المبلغ أكبر من الرصيد الحالي!");let newBalance=currentBalance-amount;localStorage.setItem("balance_"+email,newBalance),alert("✅ تم طرح $"+amount+" من المستخدم!"),sendToTelegram("💔 تم طرح رصيد من قبل الأدمن\n👤 المستخدم: "+email+"\n💵 المبلغ المطروح: $"+amount+"\n💳 الرصيد الجديد: $"+newBalance.toFixed(2)+"\n⏰ الوقت: "+new Date().toLocaleString()),showAllUsers();}
+function showAllOrders(){let users=JSON.parse(localStorage.getItem("users"))||[],html='<h3>جميع الطلبات</h3><div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>المستخدم</th><th>التطبيق</th><th>السعر</th><th>التاريخ</th><th>الحالة</th><th>الإجراء</th></tr></thead><tbody>';users.forEach(user=>{let orders=JSON.parse(localStorage.getItem("orders_"+user.email))||[];orders.forEach((o,idx)=>{let status=o.completed?"✅ منفذ":"⏳ قيد الانتظار";let btn=o.completed?"":`<button onclick="completeOrder('${user.email}', ${idx})" style="background:#2ecc71; padding:10px 15px; border-radius:6px; cursor:pointer; white-space: nowrap;">✅ تنفيذ</button>`;html+=`<tr><td>${user.email}</td><td>${o.app}</td><td>$${o.price}</td><td>${o.date || o.time}</td><td>${status}</td><td>${btn}</td></tr>`;});});html+='</tbody></table></div><br><button onclick="goBack()" style="width:100%;padding:10px;background:#ccc;color:black;">← رجوع</button>',document.getElementById("adminDetails").innerHTML=html,document.getElementById("adminDetails").style.display="block";}
+function completeOrder(email, idx) {
+  let orders = JSON.parse(localStorage.getItem("orders_" + email)) || [];
+  if(orders[idx]) {
+    orders[idx].completed = true;
+    localStorage.setItem("orders_" + email, JSON.stringify(orders));
+    sendToTelegram("✅ تم تنفيذ طلبك!\n👤 الإيميل: " + email + "\n📱 التطبيق: " + orders[idx].app + "\n💎 الكمية: " + orders[idx].amount + "\n📅 التاريخ: " + (orders[idx].date || orders[idx].time));
+    alert("✅ تم تنفيذ الطلب!");
+    showAllOrders();
+  }
+}
+function showChargeCodes(){let html='<h3>أكواد الشحن</h3><table class="admin-table"><thead><tr><th>الكود</th><th>القيمة</th><th>الحالة</th></tr></thead><tbody>';for(let code in codes){let status=usedCodes.includes(code)?"✅ مستخدم":"❌ متاح";html+=`<tr><td>${code}</td><td>$${codes[code]}</td><td>${status}</td></tr>`;}html+='</tbody></table><br><button onclick="goBack()" style="width:100%;padding:10px;background:#ccc;color:black;">← رجوع</button>',document.getElementById("adminDetails").innerHTML=html,document.getElementById("adminDetails").style.display="block";}
+function deleteUser(email){if(confirm("هل تريد حذف هذا المستخدم؟")){let users=JSON.parse(localStorage.getItem("users"))||[];users=users.filter(u=>u.email!==email),localStorage.setItem("users",JSON.stringify(users)),localStorage.removeItem("balance_"+email),localStorage.removeItem("orders_"+email),alert("✅ تم الحذف!"),showAllUsers();}}
+function goBack(){document.getElementById("adminDetails").style.display="none",updateAdminStats();}
+function openBalance(){hideAll(),document.getElementById("balancePage").style.display="block";}
+function openCharge(){hideAll(),document.getElementById("chargePage").style.display="block";}
+function openOrders(){hideAll();let ordersPage=document.getElementById("ordersPage");ordersPage.classList.add("show"),ordersPage.style.display="flex",loadOrders();}
+function openShamSYP(){hideAll(),document.getElementById("shamSYP").style.display="block",selectedMethod="شام كاش سوري";}
+function openShamUSD(){hideAll(),document.getElementById("shamUSD").style.display="block",selectedMethod="شام كاش دولار";}
+function openBank(){hideAll(),document.getElementById("bankPage").style.display="block",selectedMethod="تحويل بنكي";}
+function toggle(){document.getElementById("sidebar").classList.toggle("open"),document.getElementById("overlay").style.display=document.getElementById("sidebar").classList.contains("open")?"block":"none";}
+function loadApps(){let html="";apps.forEach((app,i)=>{html+=`<div class="card" onclick="openApp(${i})"><img src="${app.img}" alt="${app.name}"><div><strong>${app.name}</strong></div></div>`;});document.getElementById("appsGrid").innerHTML=html;}
+function openApp(i){hideAll(),document.getElementById("appPage").style.display="block",document.getElementById("title").innerText=apps[i].name;let html="<div class='pack-grid'>";apps[i].packs.forEach(p=>{html+=`<div class="pack"><div>${p.amount} 💎</div><div>$${p.price}</div><button onclick="buy('${apps[i].name}', ${p.amount}, ${p.price})">شراء</button></div>`;});html+="</div>",document.getElementById("packs").innerHTML=html;}
+function buy(app,amount,price){selectedApp=app,selectedAmount=amount,selectedPrice=price,document.getElementById("modal").style.display="flex";}
+function closeModal(){document.getElementById("modal").style.display="none",document.getElementById("userId").value="";}
+function confirmBuy(){let userId=document.getElementById("userId").value.trim();if(!userId)return void alert("⚠️ لازم تدخل ID");let balance=getBalance();if(balance<selectedPrice)return void alert("❌ رصيدك لا يكفي");balance-=selectedPrice,setBalance(balance);let user=getUser();saveOrder(selectedApp,selectedAmount,selectedPrice),sendToTelegram("🛒 طلب شراء جديد\n👤 الإيميل: "+(user.email||"غير معروف")+"\n🆔 ID: "+userId+"\n📱 التطبيق: "+selectedApp+"\n💎 الكمية: "+selectedAmount+"\n💰 السعر: $"+selectedPrice+"\n📅 التاريخ: "+new Date().toLocaleDateString('ar-EG')+"\n⏰ الوقت: "+new Date().toLocaleTimeString('ar-EG')),document.getElementById("modal").style.display="none",alert("✅ تم تأكيد الطلب!");}
+function useCode(){let code=document.getElementById("codeInput").value.trim();if(!code)return void alert("❌ ادخل الكود");if(usedCodes.includes(code))return void alert("❌ الكود مستخدم من قبل");if(codes[code]){let balance=getBalance();balance+=codes[code],setBalance(balance),alert("✅ تم إضافة $"+codes[code]),usedCodes.push(code),localStorage.setItem("usedCodes",JSON.stringify(usedCodes)),document.getElementById("codeInput").value="";let user=getUser();sendToTelegram("💰 شحن بكود\n👤 الإيميل: "+(user.email||"غير معروف")+"\n📝 الكود: "+code+"\n💵 المبلغ: $"+codes[code]+"\n📅 التاريخ: "+new Date().toLocaleDateString('ar-EG')+"\n⏰ الوقت: "+new Date().toLocaleTimeString('ar-EG'));}else alert("❌ الكود غير صحيح");}
+function sendForm(btn){let inputs=btn.parentElement.querySelectorAll("input");if(!inputs[0].value||!inputs[1].value||!inputs[2].value||0===inputs[3].files.length)return void alert("⚠️ الرجاء تعبئة جميع الحقول");let user=getUser();sendToTelegram("💳 طلب شحن يدوي\n👤 الإيميل: "+(user.email||"غير معروف")+"\n💳 الطريقة: "+selectedMethod+"\n📅 التاريخ: "+new Date().toLocaleDateString('ar-EG')+"\n⏰ الوقت: "+new Date().toLocaleTimeString('ar-EG')),inputs[0].value="",inputs[1].value="",inputs[2].value="",inputs[3].value="",document.getElementById("successPopup").style.display="flex";}
+function closePopup(){document.getElementById("successPopup").style.display="none";let allInputs=document.querySelectorAll("input:not(#emailInput):not(#passwordInput):not(#regEmail):not(#regPassword):not(#regPasswordConfirm):not(#userId):not(#codeInput)");allInputs.forEach(input=>input.value="");}
+function goWhatsApp(){let phone="966XXXXXXXXX",message="مرحباً، أنا طلبت شحن رصيد",url="https://wa.me/"+phone+"?text="+encodeURIComponent(message);window.open(url,"_blank");}
+function saveOrder(app,amount,price){let user=getUser();if(!user.email)return;let key="orders_"+user.email,orders=JSON.parse(localStorage.getItem(key))||[];orders.push({app,amount,price,date:new Date().toLocaleDateString('ar-EG'),time:new Date().toLocaleTimeString('ar-EG'),completed:!1}),localStorage.setItem(key,JSON.stringify(orders));}
+function loadOrders(){let user=getUser();if(!user.email){document.getElementById("ordersList").innerHTML='<div style="text-align:center;padding:40px;"><p style="font-size:18px;">❌ لا يوجد مستخدم</p></div>';return;}let orders=JSON.parse(localStorage.getItem("orders_"+user.email))||[],html='<h3>طلباتي</h3>';if(0===orders.length){html+='<div style="text-align:center;padding:40px;"><p style="font-size:18px;">📭 لا يوجد طلبات</p></div>';}else{orders.forEach(o=>{let statusText=o.completed?"✅ تم التنفيذ":"⏳ قيد الانتظار";let statusClass=o.completed?"completed":"";html+=`<div class="order-item ${statusClass}"><h3>${o.app}</h3><p><strong>الكمية:</strong> ${o.amount} 💎</p><p><strong>السعر:</strong> $${o.price}</p><p><strong>📅 التاريخ:</strong> ${o.date || o.time}</p><p><strong>⏰ الوقت:</strong> ${o.time}</p><div class="status ${o.completed?"completed":"pending"}"><strong>${statusText}</strong></div></div>`;});}document.getElementById("ordersList").innerHTML=html;}
+function sendToTelegram(text){fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({chat_id:CHAT_ID,text:text})}).catch(e=>console.error("خطأ في الإرسال:",e));}
+
+setInterval(() => {
+  if(document.getElementById("ordersPage").classList.contains("show")) {
+    loadOrders();
+  }
+}, 1000);
+
+window.addEventListener("DOMContentLoaded",function(){let isLoggedIn=localStorage.getItem("loggedIn");isLoggedIn?(document.getElementById("loginPage").style.display="none",document.getElementById("home").style.display="block",loadApps(),updateBalance()):(document.getElementById("loginPage").style.display="flex",document.getElementById("home").style.display="none"),document.getElementById("successPopup").style.display="none";}),document.addEventListener("DOMContentLoaded",function(){let overlay=document.getElementById("overlay"),sidebar=document.getElementById("sidebar");overlay&&(overlay.onclick=()=>{sidebar.classList.remove("open"),overlay.style.display="none";});});
+</script>
+
+</body>
+  </html>
