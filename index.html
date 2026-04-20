@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>متجر التطبيقات + لوحة الإدمن</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body{
+  font-family:Arial;
+  direction:rtl;
+  background:#f5f5f5;
+  overflow-x:hidden !important;
+  position: relative;
+}
+
+.code-editor-btn {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 10001;
+  background: #e74c3c;
+  padding: 10px 15px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  border: none;
+}
+
+.code-editor-btn:hover {
+  background: #c0392b;
+}
+
+.code-editor-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: none;
+  z-index: 10002;
+  flex-direction: column;
+}
+
+.code-editor-modal.active {
+  display: flex;
+}
+
+.code-editor-header {
+  background: #2c3e50;
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.code-editor-header h2 {
+  margin: 0;
+}
+
+.code-editor-close {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.code-editor-close:hover {
+  background: #c0392b;
+}
+
+.code-editor-body {
+  display: flex;
+  flex: 1;
+  gap: 10px;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.code-editor-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #1e1e1e;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.code-editor-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f5f5f5;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.code-editor-textarea {
+  flex: 1;
+  padding: 15px;
+  background: #1e1e1e;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  border: none;
+  resize: none;
+  direction: ltr;
+  line-height: 1.5;
+}
+
+.code-editor-preview {
+  flex: 1;
+  background: white;
+  border: 1px solid #ddd;
+  overflow: auto;
+}
+
+.code-editor-buttons {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: #2c3e50;
+}
+
+.code-editor-buttons button {
+  background: #2ecc71;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.code-editor-buttons button:hover {
+  background: #27ae60;
+}
+
+.code-editor-buttons button.danger {
+  background: #e74c3c;
+}
+
+.code-editor-buttons button.danger:hover {
+  background: #c0392b;
+}
+
+.header{
+background:linear-gradient(to left,#2ecc71,#27ae60);
+color:white;
+padding:12px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+width: 100%;
+}
+
+.sidebar{
+position:fixed;right:0;top:0;
+width:220px;height:100%;
+background:#1e1e2f;
+padding:15px;
+transform:translateX(100%);
+transition:0.3s;
+z-index:999;
+}
+.sidebar.open{transform:translateX(0);}
+
+.sidebar a{
+display:block;
+padding:12px;
+margin:8px 0;
+background:#2c2c44;
+color:white;
+text-align:center;
+border-radius:10px;
+cursor:pointer;
+}
+
+#overlay{
+position:fixed;
+top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,0.5);
+display:none;
+z-index:998;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+padding:10px;
+width: 100%;
+}
+
+.pack-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+padding:10px;
+width: 100%;
+}
+
+.card{
+background:white;
+border-radius:12px;
+padding:15px;
+text-align:center;
+cursor:pointer;
+box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+transition: transform 0.2s;
+}
+
+.card:hover{
+transform: translateY(-5px);
+}
+
+.card img{
+width:120px;
+height:120px;
+border-radius:12px;
+margin-bottom:10px;
+}
+
+.pack{
+background:white;
+padding:10px;
+border-radius:10px;
+text-align:center;
+box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+button{
+background:#2ecc71;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+transition: background 0.2s;
+margin: 3px;
+font-size: 14px;
+}
+
+button:hover{
+background:#27ae60;
+}
+
+.modal{
+position:fixed;
+top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,0.5);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+
+.modal-content{
+background:white;
+padding:20px;
+border-radius:10px;
+position:relative;
+max-height:90vh;
+overflow-y:auto;
+max-width: 90%;
+}
+
+.close-btn {
+position:absolute;
+top:5px;
+left:10px;
+font-size:20px;
+cursor:pointer;
+}
+
+input{
+width:90%;
+margin:5px auto;
+padding:8px;
+display:block;
+box-sizing:border-box;
+border:1px solid #ddd;
+border-radius:5px;
+}
+
+.auth-container {
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+height:100vh;
+width:100vw;
+background: linear-gradient(to bottom, #2ecc71, #27ae60);
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+z-index:1000;
+overflow:hidden;
+margin:0;
+padding:0;
+}
+
+.auth-box {
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+width:90%;
+max-width:350px;
+}
+
+.auth-box h2 {
+text-align:center;
+color:#2ecc71;
+margin-bottom:20px;
+}
+
+.auth-box input {
+width:95%;
+margin:10px auto;
+padding:10px;
+border:1px solid #ddd;
+border-radius:6px;
+font-size:14px;
+box-sizing:border-box;
+}
+
+.auth-box button {
+width:100%;
+margin-top:15px;
+padding:10px;
+background:#2ecc71;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-size:16px;
+}
+
+.auth-box button:hover {
+background:#27ae60;
+}
+
+.auth-link {
+text-align:center;
+margin-top:15px;
+font-size:14px;
+}
+
+.auth-link span {
+color:#2ecc71;
+cursor:pointer;
+text-decoration:underline;
+font-weight:bold;
+}
+
+.auth-link span:hover {
+color:#27ae60;
+}
+
+#adminPage {
+width: 100%;
+margin: 0;
+padding: 0;
+display: flex;
+flex-direction: column;
+}
+
+.admin-panel {
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+gap:15px;
+padding:20px;
+width: 100%;
+max-width: 100%;
+}
+
+.admin-card {
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+text-align:center;
+}
+
+.admin-card h3 {
+color:#2ecc71;
+margin:10px 0;
+}
+
+.admin-table {
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+background:white;
+overflow-x: auto;
+}
+
+.admin-table th, .admin-table td {
+padding:10px;
+text-align:right;
+border-bottom:1px solid #ddd;
+font-size: 13px;
+}
+
+.admin-table th {
+background:#2ecc71;
+color:white;
+}
+
+#ordersPage {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: none !important;
+  flex-direction: column !important;
+  max-width: 100% !important;
+  background: #f5f5f5;
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+
+#ordersPage.show {
+  display: flex !important;
+}
+
+#ordersList {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 20px !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  background: #f5f5f5;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  flex: 1 !important;
+  max-height: calc(100vh - 100px) !important;
+}
+
+#ordersList h3 {
+  color: #2ecc71;
+  margin-bottom: 15px;
+  font-size: 20px;
+  position: sticky;
+  top: 0;
+  background: #f5f5f5;
+  padding: 10px 0;
+  z-index: 10;
+}
+
+.order-item {
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+border-right:5px solid #8B4513;
+margin-bottom:10px;
+}
+
+.order-item.completed {
+border-right-color:#2ecc71;
+background:#f0fff4;
+}
+
+.order-item h3 {
+color:#2ecc71;
+margin:10px 0;
+}
+
+.order-item p {
+margin:5px 0;
+font-size:14px;
+}
+
+.order-item .status {
+margin-top:10px;
+font-weight:bold;
+padding:10px;
+border-radius:6px;
+}
+
+.order-item .status.pending {
+color:#8B4513;
+background:#fff3e0;
+}
+
+.order-item .status.completed {
+color:#2ecc71;
+background:#e8f5e9;
+}
+
+#adminDetails {
+width: 100%;
+padding: 20px;
+margin: 0;
+box-sizing: border-box;
+overflow-y: auto;
+max-height: calc(100vh - 100px);
+}
+
+.balance-modal {
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+margin-bottom:20px;
+}
+
+.balance-modal h4 {
+color:#2ecc71;
+margin-bottom:15px;
+}
+
+.balance-controls {
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+align-items:center;
+margin-bottom:10px;
+}
+
+.balance-controls input {
+width:120px !important;
+margin:0 !important;
+padding:8px !important;
+}
+
+.balance-controls button {
+padding:8px 15px !important;
+margin:0 !important;
+}
+
+.currency-converter {
+background:#f9f9f9;
+padding:15px;
+border-radius:10px;
+margin-bottom:15px;
+border:2px solid #2ecc71;
+}
+
+.currency-converter input {
+width:100% !important;
+margin:10px 0 !important;
+padding:12px !important;
+font-size:16px !important;
+}
+
+.usd-display {
+text-align:center;
+background:white;
+padding:15px;
+border-radius:8px;
+margin-top:10px;
+border:2px solid #27ae60;
+}
+
+.usd-display p {
+color:#2ecc71;
+font-weight:bold;
+font-size:18px;
+margin:0;
+}
+
+@media (max-width:600px){
+.grid{
+grid-template-columns:repeat(2,1fr);
+}
+.card{
+padding:10px;
+}
+.card img{
+width:80px;
+height:80px;
+}
+#ordersList {
+grid-template-columns:1fr;
+padding: 10px;
+}
+.order-item {
+padding: 15px;
+}
+.admin-table {
+font-size: 12px;
+}
+.admin-table th, .admin-table td {
+padding: 8px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<button class="code-editor-btn" onclick="toggleCodeEditor()">🔍 افحص الكود</button>
+
+<div class="code-editor-modal" id="codeEditorModal">
+  <div class="code-editor-header">
+    <h2>🔍 محرر الكود</h2>
+    <button class="code-editor-close" onclick="toggleCodeEditor()">إغلاق</button>
+  </div>
+  <div class="code-editor-body">
+    <div class="code-editor-left">
+      <textarea class="code-editor-textarea" id="codeTextarea" placeholder="الكود هنا..."></textarea>
+    </div>
+    <div class="code-editor-right">
+      <iframe id="codePreview" class="code-editor-preview"></iframe>
+    </div>
+  </div>
+  <div class="code-editor-buttons">
+    <button onclick="updatePreview()">▶️ تحديث المعاينة</button>
+    <button onclick="copyCode()">📋 نسخ الكود</button>
+    <button class="danger" onclick="resetCode()">🔄 استرجاع الأصلي</button>
+  </div>
+</div>
+
+<div class="sidebar" id="sidebar">
+<a onclick="goHome()">🏠 الرئيسية</a>
+<a onclick="openBalance()">💰 إضافة رصيد</a>
+<a onclick="openOrders()">📦 طلباتي</a>
+<a id="adminLink" onclick="openAdmin()" style="background:#e74c3c; display:none;">👑 لوحة الإدمن</a>
+<a onclick="logout()" style="background:#e74c3c;">🚪 تسجيل الخروج</a>
+</div>
+
+<div id="overlay"></div>
+
+<div id="loginPage" class="auth-container">
+<div class="auth-box">
+<h2>🔐 تسجيل الدخول</h2>
+<input id="emailInput" type="email" placeholder="ادخل ايميلك">
+<input type="password" id="passwordInput" placeholder="كلمة المرور">
+<button onclick="login()">دخول</button>
+<div class="auth-link">
+ما عندك حساب؟
+<span onclick="openRegister()">إنشاء حساب جديد</span>
+</div>
+</div>
+</div>
+
+<div id="registerPage" class="auth-container" style="display:none;">
+<div class="auth-box">
+<h2>✍️ إنشاء حساب جديد</h2>
+<input id="regEmail" type="email" placeholder="ادخل ايميلك">
+<input type="password" id="regPassword" placeholder="كلمة المرور">
+<input type="password" id="regPasswordConfirm" placeholder="تأكيد كلمة المرور">
+<button onclick="register()">إنشاء حساب</button>
+<div class="auth-link">
+عندك حساب؟
+<span onclick="goToLogin()">تسجيل الدخول</span>
+</div>
+</div>
+</div>
+
+<div id="home" style="display:none">
+<div class="header">
+<div onclick="toggle()" style="cursor:pointer;font-size:20px;">☰</div>
+<div id="balanceText"></div>
+</div>
+<div class="grid" id="appsGrid"></div>
+</div>
+
+<div id="adminPage" style="display:none;">
+<div class="header">
+<div onclick="goHome()" style="cursor:pointer;">← رجوع</div>
+<div>👑 لوحة الإدمن</div>
+</div>
+<div class="admin-panel">
+<div class="admin-card">
+<h3>📊 الإحصائيات</h3>
+<p>👥 المستخدمين: <span id="totalUsers">0</span></p>
+<p>📦 الطلبات: <span id="totalOrders">0</span></p>
+<p>💰 المبيعات: $<span id="totalSales">0</span></p>
+</div>
+<div class="admin-card">
+<h3>👥 المستخدمين</h3>
+<button onclick="showAllUsers()">عرض المستخدمين</button>
+</div>
+<div class="admin-card">
+<h3>📦 الطلبات</h3>
+<button onclick="showAllOrders()">عرض الطلبات</button>
+</div>
+</div>
+<div id="adminDetails" style="display:none;"></div>
+</div>
+
+<div id="appPage" style="display:none">
+<div class="header">
+<div onclick="goHome()" style="cursor:pointer;">رجوع</div>
+<div id="title"></div>
+</div>
+<div id="packs"></div>
+</div>
+
+<div id="balancePage" style="display:none">
+<div class="header">
+<div onclick="goHome()" style="cursor:pointer;">رجوع</div>
+<div>إضافة رصيد</div>
+</div>
+<div class="grid">
+<div class="card" onclick="openShamSYP()">
+<img src="https://i.ibb.co/fY1MpH8d/IMG.jpg">
+<div>شام كاش سوري</div>
+</div>
+<div class="card" onclick="openShamUSD()">
+<img src="https://i.ibb.co/fY1MpH8d/IMG.jpg">
+<div>شام كاش دولار</div>
+</div>
+<div class="card" onclick="openBank()">
+<img src="https://i.ibb.co/qzq6hMN/IMG.jpg">
+<div>زراعات بنك</div>
+</div>
+</div>
+</div>
+
+<div id="shamSYP" style="display:none">
+<div class="header"><div onclick="openBalance()" style="cursor:pointer;">رجوع</div><div>شام كاش سوري</div></div>
+<div style="padding:10px;">
+<div class
